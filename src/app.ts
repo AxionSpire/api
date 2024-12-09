@@ -2,7 +2,7 @@ import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
 import { Server } from "http";
 
-const player = require("./player");
+import { router as player } from "./player";
 
 dotenv.config();
 

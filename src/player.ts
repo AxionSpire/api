@@ -1,7 +1,7 @@
 import { validate as uuidValidate } from 'uuid';
 import express, { Request, Response } from 'express';
 import escapeHtml from 'escape-html';
-const router = express.Router();
+export const router = express.Router();
 
 router.get('/:id', (req: Request, res: Response) => {
   const player: string = req.params.id
@@ -13,5 +13,3 @@ router.get('/:id', (req: Request, res: Response) => {
   }
   res.send(JSON.stringify({ uuid: escapeHtml(player) }));
 })
-
-module.exports = router;
