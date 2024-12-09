@@ -5,7 +5,7 @@ import { router as player } from "./player";
 
 dotenv.config();
 
-const app: Express = express();
+export const app: Express = express();
 const port = process.env.PORT || 6677;
 
 app.get("/", (req: Request, res: Response) => {
@@ -21,10 +21,8 @@ app.use("/player", player);
 
 if (process.env.NODE_ENV !== "test") { startServer(); }
 
-function startServer() {
+export function startServer() {
   return app.listen(port, () => {
     console.log(`[server] Server is running at http://localhost:${port}`);
   });
 }
-
-module.exports = { app, startServer };
