@@ -22,7 +22,8 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "supertest": "^7.0.0",
-    "uuid": "^11.0.3"
+    "uuid": "^11.0.3",
+    "escape-html": "^1.0.3"
   },
   "devDependencies": {
     "@jest/globals": "^29.7.0",
