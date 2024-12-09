@@ -2,9 +2,11 @@
   "name": "axionspire-api",
   "version": "1.0.0",
   "description": "The API for the AxionSpire Minecraft server.",
-  "main": "index.js",
+  "main": "dist/app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "npx tsc",
+    "start": "node .",
+    "dev": "nodemon -x 'ts-node' -w src src/app.ts"
   },
   "keywords": [
     "minecraft",
@@ -13,8 +15,15 @@
     "express"
   ],
   "author": "Aelithron",
-  "license": "ISC",
   "dependencies": {
+    "dotenv": "^16.4.7",
     "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.10.1",
+    "nodemon": "^3.1.7",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2"
   }
 }
