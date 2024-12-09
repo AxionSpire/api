@@ -1,0 +1,20 @@
+{
+  "name": "axionspire-api",
+  "version": "1.0.0",
+  "description": "The API for the AxionSpire Minecraft server.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "minecraft",
+    "axionspire",
+    "api",
+    "express"
+  ],
+  "author": "Aelithron",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
