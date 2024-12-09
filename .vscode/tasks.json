@@ -7,14 +7,14 @@
 			"group": "test",
 			"problemMatcher": [],
 			"label": "npm: test",
-			"detail": "cross-env NODE_ENV=test jest --testTimeout=5000"
+			"detail": "Run Jest tests"
 		},
 		{
 			"type": "npm",
 			"script": "dev",
 			"problemMatcher": [],
 			"label": "npm: dev",
-			"detail": "nodemon -x 'ts-node' -w src src/app.ts"
+			"detail": "Start the development server"
 		},
 		{
 			"type": "npm",
@@ -22,14 +22,23 @@
 			"group": "build",
 			"problemMatcher": [],
 			"label": "npm: build",
-			"detail": "npx tsc"
+			"detail": "Compile the server using TSC"
 		},
 		{
 			"type": "npm",
+			"group": "build",
 			"script": "start",
 			"problemMatcher": [],
 			"label": "npm: start",
-			"detail": "node ."
+			"detail": "Starts the compiled version of the server."
+		},
+		{
+			"type": "npm",
+			"script": "lint",
+			"group": "test",
+			"problemMatcher": [],
+			"label": "npm: lint",
+			"detail": "Run ESLint linting"
 		}
 	]
 }
