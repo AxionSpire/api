@@ -3,6 +3,9 @@ import express, { Request, Response } from 'express';
 import escapeHtml from 'escape-html';
 export const router = express.Router();
 
+export type UserStats = { statID: string, value: string, timestamp: Date, public: boolean }[];
+export type UserError = { error: string, message: string }
+
 router.get('/:id', (req: Request, res: Response) => {
   const player: string = req.params.id
   res.contentType("application/json");

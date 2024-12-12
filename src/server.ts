@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 import { UUIDTypes, validate as uuidValidate } from 'uuid';
-import writeStats from './db/writeStats';
+import { writeStats } from './db/stats';
 export const router = express.Router();
 
 export type StatArray = { uuid: UUIDTypes; value: string }[];

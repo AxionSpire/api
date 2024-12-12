@@ -4,6 +4,7 @@ import { playerStats } from "./schema";
 import { StatArray } from "../server";
 import { eq } from 'drizzle-orm';
 import mysql from "mysql2/promise";
+import { UserStats, UserError } from '../player';
 
 
 const poolConnection = mysql.createPool({
@@ -11,16 +12,11 @@ const poolConnection = mysql.createPool({
 });
 const db = drizzle({ client: poolConnection });
 
-export default async function writeStats(statID: string, records: StatArray): Promise<boolean> {
+export async function writeStats(statID: string, records: StatArray): Promise<boolean> {
   if (process.env.NODE_ENV === "test") return true;
   try {
     for (const record of records) {
-      const statRecord: typeof playerStats.$inferInsert = {
-        id: `${statID}-${record.uuid}`,
-        uuid: record.uuid.toString(),
-        statValue: record.value,
-        statName: statID
-      };
+      let statPublic: boolean = false;
 
       // Safety check - Check if the record already exists before continuing
       // Used to know whether or not to delete the existing data.
@@ -33,12 +29,21 @@ export default async function writeStats(statID: string, records: StatArray): Pr
 
       // Delete existing data before writing new data
       if (query.length !== 0) {
+        statPublic = query[0].public;
         await db
           .delete(playerStats)
           .where(eq(playerStats.id, `${statID}-${record.uuid}`))
           .limit(1)
           .execute()
       }
+
+      const statRecord: typeof playerStats.$inferInsert = {
+        id: `${statID}-${record.uuid}`,
+        uuid: record.uuid.toString(),
+        statValue: record.value,
+        statName: statID,
+        public: statPublic
+      };
 
       await db
         .insert(playerStats)
@@ -49,5 +54,28 @@ export default async function writeStats(statID: string, records: StatArray): Pr
   } catch (e) {
     console.error("[db] Database error: " + e)
     return false;
+  }
+}
+
+export async function readStats(uuid: string): Promise<UserStats | UserError> {
+  if (process.env.NODE_ENV === "test") return { error: "TEST_ENV", message: "Database not available in the testing environment." };
+  try {
+    const query = await db
+      .select()
+      .from(playerStats)
+      .where(eq(playerStats.uuid, uuid))
+    const list: UserStats = [];
+    for (const stat of query) {
+      list.push({
+        statID: stat.statName,
+        value: stat.statValue,
+        timestamp: stat.lastUpdated,
+        public: stat.public
+      });
+    }
+    return list;
+  } catch (e) {
+    console.error("[db] Database error: " + e)
+    return { error: "DATABASE_ERROR", message: "Database error." };
   }
 }
