@@ -1,8 +1,9 @@
 import express, { Request, Response } from 'express';
 import { UUIDTypes, validate as uuidValidate } from 'uuid';
+import writeStats from './db/writeStats';
 export const router = express.Router();
 
-type StatArray = { uuid: UUIDTypes; value: string }[];
+export type StatArray = { uuid: UUIDTypes; value: string }[];
 
 router.post('/stats', (req: Request, res: Response) => {
   res.contentType("application/json");
@@ -49,10 +50,7 @@ router.post('/stats', (req: Request, res: Response) => {
     }
   }
 
-  // TEMPORARY, REMOVE WHEN DATABASE IS USED
-  for (const record of records) {
-    console.log(`[server] ${serverID} - ${statID} - ${record.uuid}: ${record.value}`);
-  }
-
+  // Writes the information to the database
+  writeStats(statID, records);
   res.json({ message: "Stats updated." });
 })

@@ -8,7 +8,7 @@ router.get('/:id', (req: Request, res: Response) => {
   res.contentType("application/json");
   if (!uuidValidate(player)) {
     res.status(400);
-    res.json({ error: "INVALID_UUID", message: "An invalid UUID was entered." });
+    res.json({ error: "INVALID_UUID", message: "An invalid UUID was provided. Be sure the UUID contains dashes." });
     return;
   }
   res.json({ uuid: escapeHtml(player) });
