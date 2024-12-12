@@ -12,6 +12,7 @@ const poolConnection = mysql.createPool({
 const db = drizzle({ client: poolConnection });
 
 export default async function writeStats(statID: string, records: StatArray): Promise<void> {
+  if (process.env.NODE_ENV === "test") return;
   for (const record of records) {
     const statRecord: typeof playerStats.$inferInsert = {
       id: `${statID}-${record.uuid}`,

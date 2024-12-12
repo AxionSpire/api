@@ -20,7 +20,7 @@ describe("POST /server/stats Valid", () => {
   });
 });
 
-describe("POST /player/(uuid) Invalid Key", () => {
+describe("POST /server/stats Invalid Key", () => {
   it("should return an unauthorized error", async () => {
     const res: Response = await supertest(app).post(`/server/stats`).send({
       serverID: "api-test-env",
