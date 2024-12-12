@@ -5,7 +5,7 @@ export const router = express.Router();
 
 export type StatArray = { uuid: UUIDTypes; value: string }[];
 
-router.post('/stats', (req: Request, res: Response) => {
+router.post('/stats', async (req: Request, res: Response) => {
   res.contentType("application/json");
   if (req.headers['authorization'] === undefined) {
     res.status(401);
@@ -51,6 +51,11 @@ router.post('/stats', (req: Request, res: Response) => {
   }
 
   // Writes the information to the database
-  writeStats(statID, records);
+  const success: boolean = await writeStats(statID, records);
+  if (!success) {
+    res.status(500);
+    res.json({ error: "UNKNOWN_ERROR", message: "An unknown error occurred with the database." });
+    return;
+  }
   res.json({ message: "Stats updated." });
 })

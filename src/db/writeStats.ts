@@ -11,37 +11,43 @@ const poolConnection = mysql.createPool({
 });
 const db = drizzle({ client: poolConnection });
 
-export default async function writeStats(statID: string, records: StatArray): Promise<void> {
-  if (process.env.NODE_ENV === "test") return;
-  for (const record of records) {
-    const statRecord: typeof playerStats.$inferInsert = {
-      id: `${statID}-${record.uuid}`,
-      uuid: record.uuid.toString(),
-      statValue: record.value,
-      statName: statID
-    };
+export default async function writeStats(statID: string, records: StatArray): Promise<boolean> {
+  if (process.env.NODE_ENV === "test") return true;
+  try {
+    for (const record of records) {
+      const statRecord: typeof playerStats.$inferInsert = {
+        id: `${statID}-${record.uuid}`,
+        uuid: record.uuid.toString(),
+        statValue: record.value,
+        statName: statID
+      };
 
-    // Safety check - Check if the record already exists before continuing
-    // Used to know whether or not to delete the existing data.
-    // May not be needed, just here to preserve data integrity.
-    const query = await db
-      .select()
-      .from(playerStats)
-      .where(eq(playerStats.id, `${statID}-${record.uuid}`))
-      .limit(1);
-
-    // Delete existing data before writing new data
-    if (query.length !== 0) {
-      await db
-        .delete(playerStats)
+      // Safety check - Check if the record already exists before continuing
+      // Used to know whether or not to delete the existing data.
+      // May not be needed, just here to preserve data integrity.
+      const query = await db
+        .select()
+        .from(playerStats)
         .where(eq(playerStats.id, `${statID}-${record.uuid}`))
-        .limit(1)
-        .execute()
-    }
+        .limit(1);
 
-    await db
-      .insert(playerStats)
-      .values(statRecord)
-      .execute();   
+      // Delete existing data before writing new data
+      if (query.length !== 0) {
+        await db
+          .delete(playerStats)
+          .where(eq(playerStats.id, `${statID}-${record.uuid}`))
+          .limit(1)
+          .execute()
+      }
+
+      await db
+        .insert(playerStats)
+        .values(statRecord)
+        .execute();   
+    }
+    return true;
+  } catch (e) {
+    console.error("[db] Database error: " + e)
+    return false;
   }
 }
