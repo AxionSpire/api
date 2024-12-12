@@ -5,6 +5,7 @@ export const router = express.Router();
 
 export type UserStats = { statID: string, value: string, timestamp: Date, public: boolean }[];
 export type UserError = { error: string, message: string }
+type StatResponse = UserStats | UserError;
 
 router.get('/:id', async (req: Request, res: Response) => {
   const player: string = req.params.id
@@ -14,6 +15,6 @@ router.get('/:id', async (req: Request, res: Response) => {
     res.json({ error: "INVALID_UUID", message: "An invalid UUID was provided. Be sure the UUID contains dashes." });
     return;
   }
-  const stats: UserStats | UserError: await readStats
+  const stats: StatResponse = await readStats
   res.json({ uuid: escapeHtml(player) });
 })
