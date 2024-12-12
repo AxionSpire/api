@@ -15,6 +15,15 @@ router.get('/:id', async (req: Request, res: Response) => {
     res.json({ error: "INVALID_UUID", message: "An invalid UUID was provided. Be sure the UUID contains dashes." });
     return;
   }
-  const stats: StatResponse = await readStats
+  const stats: StatResponse = await readStats();
+  if (typeof stats === UserError && stats.error !== "TEST_ENV") {
+    res.status(500);
+    res.json({ error: "SERVER_ERROR", message: "A server error occurred.", server_error_info: [ server_error: stats.error, server_message: stats.message ] })
+    return;
+  }
+  if (typeof stats === UserError && stats.error === "TEST_ENV") {
+    res.json({ uuid: escapeHtml(player) }); // temporary
+    return;
+  }
   res.json({ uuid: escapeHtml(player) });
 })
