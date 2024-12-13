@@ -4,7 +4,7 @@ import { playerStats } from "./schema";
 import { StatArray } from "../server";
 import { eq } from 'drizzle-orm';
 import mysql from "mysql2/promise";
-import { UserStats, UserError } from '../player';
+import { UserStats } from '../player';
 
 
 const poolConnection = mysql.createPool({
@@ -57,8 +57,8 @@ export async function writeStats(statID: string, records: StatArray): Promise<bo
   }
 }
 
-export async function readStats(uuid: string): Promise<UserStats | UserError> {
-  if (process.env.NODE_ENV === "test") return { error: "TEST_ENV", message: "Database not available in the testing environment." };
+export async function readStats(uuid: string): Promise<UserStats | null> {
+  if (process.env.NODE_ENV === "test") return null;
   try {
     const query = await db
       .select()
@@ -76,6 +76,6 @@ export async function readStats(uuid: string): Promise<UserStats | UserError> {
     return list;
   } catch (e) {
     console.error("[db] Database error: " + e)
-    return { error: "DATABASE_ERROR", message: "Database error." };
+    return null;
   }
 }
