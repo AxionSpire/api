@@ -18,7 +18,7 @@ router.get('/:id', async (req: Request, res: Response) => {
   const stats: StatResponse = await readStats();
   if (typeof stats === UserError && stats.error !== "TEST_ENV") {
     res.status(500);
-    res.json({ error: "SERVER_ERROR", message: "A server error occurred.", server_error_info: [ server_error: stats.error, server_message: stats.message ] })
+    res.json({ error: "SERVER_ERROR", message: "A server error occurred.", errorinfo: [ "server_error": stats.error, "server_message": stats.message ] })
     return;
   }
   if (typeof stats === UserError && stats.error === "TEST_ENV") {
