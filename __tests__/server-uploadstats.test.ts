@@ -10,7 +10,7 @@ describe("POST /server/stats Valid", () => {
       records: [
         {
           "uuid": "b876ec32-e396-476b-a115-8438d83c67d4", // Technoblade's UUID, Rest in Peace <3
-          "value": 100
+          "value": "100"
         }
       ]
     }).set("authorization", `Bearer ${process.env.API_KEY}`);
@@ -28,7 +28,7 @@ describe("POST /server/stats Invalid Key", () => {
       records: [
         {
           "uuid": "b876ec32-e396-476b-a115-8438d83c67d4", // Technoblade's UUID, Rest in Peace <3
-          "value": 100
+          "value": "100"
         }
       ]
     });
@@ -42,7 +42,7 @@ describe("POST /server/stats Invalid Key", () => {
       records: [
         {
           "uuid": "b876ec32-e396-476b-a115-8438d83c67d4", // Technoblade's UUID, Rest in Peace <3
-          "value": 100
+          "value": "100"
         }
       ]
     }).set("authorization", `Bearer invalid-data`);
@@ -58,7 +58,7 @@ describe("POST /server/stats Invalid Body", () => {
       records: [
         {
           "uuid": "b876ec32-e396-476b-a115-8438d83c67d4", // Technoblade's UUID, Rest in Peace <3
-          "value": 100
+          "value": "100"
         }
       ]
     }).set("authorization", `Bearer ${process.env.API_KEY}`);
@@ -71,7 +71,7 @@ describe("POST /server/stats Invalid Body", () => {
       records: [
         {
           "uuid": "b876ec32-e396-476b-a115-8438d83c67d4", // Technoblade's UUID, Rest in Peace <3
-          "value": 100
+          "value": "100"
         }
       ]
     }).set("authorization", `Bearer ${process.env.API_KEY}`);
@@ -105,7 +105,7 @@ describe("POST /server/stats Invalid Record", () => {
       records: [
         {
           "uuid": "invalid-data",
-          "value": 100
+          "value": "100"
         }
       ]
     }).set("authorization", `Bearer ${process.env.API_KEY}`);
