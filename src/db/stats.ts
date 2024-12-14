@@ -1,11 +1,11 @@
 import 'dotenv/config';
 import { drizzle } from "drizzle-orm/mysql2";
 import { playerStats } from "./schema";
-import { StatArray } from "../server";
+import { StatArray, PublicSettings } from "../server";
 import { eq } from 'drizzle-orm';
 import mysql from "mysql2/promise";
 import { UserStats } from '../player';
-
+import { UUIDTypes } from 'uuid';
 
 const poolConnection = mysql.createPool({
   uri: process.env.DATABASE_URL
@@ -77,5 +77,22 @@ export async function readStats(uuid: string): Promise<UserStats | null> {
   } catch (e) {
     console.error("[db] Database error: " + e)
     return null;
+  }
+}
+
+export async function setStatPrivacy(uuid: UUIDTypes, stats: PublicSettings): Promise<boolean> {
+  if (process.env.NODE_ENV === "test") return true;
+  try {
+    for (const setting of stats) {
+      await db
+        .update(playerStats)
+        .set({ public: setting.public })
+        .where(eq(playerStats.id, `${setting.stat}-${uuid}`))
+        .execute();
+    }
+    return true;
+  } catch (e) {
+    console.error("[db] Database error: " + e)
+    return false;
   }
 }
