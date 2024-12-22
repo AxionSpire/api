@@ -16,7 +16,9 @@ app.get("/", (req: Request, res: Response) => {
   res.json({
     welcome: "Welcome to the AxionSpire API!", 
     accessing_on: req.hostname,
+    version: "DEV (not implemented)",
     github_repo: "https://github.com/AxionSpire/api",
+    server: "AxionSpire API",
   });
 });
 

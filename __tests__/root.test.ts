@@ -9,6 +9,7 @@ describe("GET /", () => {
     const res: Response = await supertest(app).get(`/`);
     expect(res.statusCode).toBe(200);
     expect(JSON.parse(res.text).welcome).toBe("Welcome to the AxionSpire API!");
+    expect(JSON.parse(res.text).server).toBe("AxionSpire API");
     server.close();
   });
 });
