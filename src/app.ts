@@ -19,6 +19,7 @@ app.get("/", (req: Request, res: Response) => {
     version: "DEV (not implemented)",
     github_repo: "https://github.com/AxionSpire/api",
     server: "AxionSpire API",
+    auth_valid: (req.headers['authorization'] === `Bearer ${process.env.API_KEY}`),
   });
 });
 

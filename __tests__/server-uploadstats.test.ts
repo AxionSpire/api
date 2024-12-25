@@ -45,7 +45,7 @@ describe("POST /server/stats Invalid Key", () => {
           "value": "100"
         }
       ]
-    }).set("authorization", `Bearer invalid-data`);
+    }).set("authorization", `Bearer test-invalid`);
     expect(res.statusCode).toBe(403);
     expect(JSON.parse(res.text).error).toBe("FORBIDDEN");
   });
