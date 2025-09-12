@@ -1,3 +1,4 @@
+**⚠️ This project is not completed yet, and will have bugs! DO NOT use this in production.**
 # AxionSpire API
 The comprehensive API for the AxionSpire Minecraft server.
 Built to work for any Minecraft server, though!
